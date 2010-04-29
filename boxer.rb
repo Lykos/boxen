@@ -1,5 +1,6 @@
 class Boxer
-  def initialize(boss, name="juuuuuuuuuuj", kijn=1)
+  def initialize(player, boss, name="juuuuuuuuuuj", kijn=1)
+    @player = player
     if kijn == 1
       if rand(3) == 0
         name = $vokale[rand(18)]
@@ -90,10 +91,20 @@ class Boxer
     end
   end
 
+  attr_reader :boss
   attr_accessor :name, :kondition, :kraft, :geld, :staerke, :aufwaermen, :motivation
   attr_accessor :konzentration, :schnelligkeit, :freude, :muedigkeit, :hunger, :gewicht
-  attr_accessor :dehnbarkeit, :pokal, :kijn, :heraus, :boss, :waffen, :waffent, :b, :s
+  attr_accessor :dehnbarkeit, :pokal, :kijn, :heraus, :waffen, :waffent, :b, :s
   attr_accessor :st, :ak, :init, :agr, :w, :wk, :hk, :kg, :rw, :lp, :amulette, :kosten
+
+  def human_trainer?
+    self.class == Trainer && human?
+  end
+
+  def human?
+    @player.human?
+  end
+
   def crunde
     @heraus = 1
     @hunger += (rand(20)/10.0)
@@ -408,7 +419,7 @@ class Boxer
   end
   def herausfordern
     return if @heraus == 0
-    if self.object_id == @boss.object_id
+    if human_trainer?
       puts "Gegen den Boxer welches Trainers willst du ein Duell vorschlagen?"
     else
       puts "Gegen den Boxer welches Trainers soll #{@name} kämpfen?"
@@ -437,7 +448,7 @@ class Boxer
   def cherausfordern
     return if @heraus == 0
     pself = (((@schnelligkeit + @aufwaermen) / 2).to_i) * 7 + ((@staerke / 10).to_i) * 4 + (((@kondition + @aufwaermen) / 2).to_i) * 4 + ((@konzentration/20).to_i) * 2 + ((@gewicht - 62)/25).to_i
-    pself += 10 unless @boss.name == "Elch" and not @boss.object_id == self.object_id
+    pself += 10 unless @boss.name == "Elch" and not @boss.equal?(self)
     $du.boxer.each do |bx|
       next if bx.heraus == 0
       pbx = (((bx.schnelligkeit + bx.aufwaermen) / 2).to_i) * 7 + ((bx.staerke / 10).to_i) * 4 + (((bx.kondition + bx.aufwaermen) / 2).to_i) * 4 + ((bx.konzentration/10).to_i) * 2 + ((bx.gewicht - 62)/25).to_i
@@ -477,7 +488,7 @@ class Boxer
       end
     end
     $gegner.each do |g|
-      next if g.object_id == @boss.object_id
+      next if g.equal?(@boss)
       g.boxer.each do |bx|
         next if bx.heraus == 0
         pbx = (((bx.schnelligkeit + bx.aufwaermen) / 2).to_i) * 7 + ((bx.staerke / 10).to_i) * 4 + (((bx.kondition + bx.aufwaermen) / 2).to_i) * 4 + ((bx.konzentration/10).to_i) * 2 + ((bx.gewicht - 62)/25).to_i
@@ -485,7 +496,7 @@ class Boxer
           wahl = 0
           loop do
             print "Willst du das Duell #{@name}s gegen #{bx.name}"
-            print ", den Boxer von #{bx.boss.name}, " unless self.object_id == @boss.object_id
+            print ", den Boxer von #{bx.boss.name}, " unless self.equal?(@boss)
             puts "sehen?"
             wahl = gets.chomp
             break if wahl == "j" or wahl == "n"
@@ -837,10 +848,10 @@ class Boxer
     end
     @freude -= (rand(100)/10.0)
     print "#{@name} dehn#{@s}t. " if @kijn == 0
-    print "Du" if self.object_id == @boss.object_id and @kijn == 0
-    print "Er" if not self.object_id == @boss.object_id and @kijn == 0
+    print "Du" if self.equal?(@boss) and @kijn == 0
+    print "Er" if not self.equal?(@boss) and @kijn == 0
     print " ha#{@s}t nun alles mögliche besser" if @kijn == 0
-    print ", aber Spass macht ihm das gar nicht" if @kijn == 0 and not @boss.object_id == self.object_id
+    print ", aber Spass macht ihm das gar nicht" if @kijn == 0 and not @boss.equal?(self)
     puts "." if @kijn == 0
   end
   def yoga
@@ -1001,11 +1012,11 @@ class Boxer
   def schlagen(gegner, kommentarejn)
     ieser = "ieser"
     ihn = "ihn"
-    if @name.object_id == $du.name.object_id
+    if @name.equal?($du.name)
       ieser = "u"
       ihn = "dich"
     end
-    unless gegner.object_id == $du.object_id
+    unless gegner.human_trainer?
       puts "#{@name} probier#{@s}t #{gegner.name} zu schlagen," if kommentarejn == 1
     else
       puts "#{@name} probiert dich zu schlagen," if kommentarejn == 1
@@ -1066,13 +1077,13 @@ class Boxer
         if w6 == 1
           puts "was #{gegner.name} jedoch aus purem Glück überleb#{gegner.s}t." if kommentarejn == 1
           return
-        elsif w6 == 2 and not @st > gegner.w + 1 and not gegner.object_id == $du.object_id
+        elsif w6 == 2 and not @st > gegner.w + 1 and not gegner.human_trainer?
           puts "was #{gegner.name} jedoch aus unbekannten Gründen nichts ausmacht." if kommentarejn == 1
           return
         elsif w6 == 2 and not @st > gegner.w + 1
           puts "was dir jedoch aus unbekannten Gründen nichts ausmacht." if kommentarejn == 1
           return
-        elsif w6 == 3 and not @st > gegner.w and not gegner.object_id == $du.object_id
+        elsif w6 == 3 and not @st > gegner.w and not gegner.human_trainer?
           puts "was #{gegner.name} jedoch nicht verwundet." if kommentarejn == 1
           return
         elsif w6 == 3 and not @st > gegner.w
@@ -1097,26 +1108,26 @@ class Boxer
         w6 = 1 + rand(6)
         if w6 == 2 and gegner.rw <= 2
           print "was aber an " if kommentarejn == 1
-          print "#{gegner.name}s" if kommentarejn == 1 and not gegner.object_id == $du.object_id
-          print "deiner" if kommentarejn == 1 and gegner.object_id == $du.object_id
+          print "#{gegner.name}s" if kommentarejn == 1 and not gegner.human_trainer?
+          print "deiner" if kommentarejn == 1 and gegner.human_trainer?
           puts " überquillender Fettmasse nicht vorbeikommt." if kommentarejn == 1
           return
         elsif w6 == 3 and gegner.rw <= 3
           print "was aber in " if kommentarejn == 1
-          print "#{gegner.name}s" if kommentarejn == 1 and not gegner.object_id == $du.object_id
-          print "deinem" if kommentarejn == 1 and gegner.object_id == $du.object_id
+          print "#{gegner.name}s" if kommentarejn == 1 and not gegner.human_trainer?
+          print "deinem" if kommentarejn == 1 and gegner.human_trainer?
           puts " schwabbelndem Fett steckenbleibt." if kommentarejn == 1
           return
         elsif w6 == 4 and gegner.rw <= 4
           print "der Schlag wird aber von " if kommentarejn == 1
-          print "#{gegner.name}s" if kommentarejn == 1 and not gegner.object_id == $du.object_id
-          print "deinem" if kommentarejn == 1 and gegner.object_id == $du.object_id
+          print "#{gegner.name}s" if kommentarejn == 1 and not gegner.human_trainer?
+          print "deinem" if kommentarejn == 1 and gegner.human_trainer?
           puts " Fett derart abgebremst, dass er ihn nicht mehr verletzt." if kommentarejn == 1
           return
         elsif w6 == 5 and gegner.rw <= 5
           print "der Schlag macht " if kommentarejn == 1
-          print gegner.name if kommentarejn == 1 and not gegner.object_id == $du.object_id
-          print "dir" if kommentarejn == 1 and gegner.object_id == $du.object_id
+          print gegner.name if kommentarejn == 1 and not gegner.human_trainer?
+          print "dir" if kommentarejn == 1 and gegner.human_trainer?
           puts " aber nicht aus." if kommentarejn == 1
           return
         elsif w6 == 6 and gegner.rw <= 6
@@ -1127,9 +1138,9 @@ class Boxer
     end
     gegner.lp -= 1
     gegner.lp -= 1 if @waffent.include? "Meisterhandschuh des Todes"
-    puts "und er verwundet #{gegner.name}!!! Nun hat dieser nur noch #{gegner.lp} Lebenspunkte!" if kommentarejn == 1 and not gegner.object_id == $du.object_id and not @name.object_id == $du.name.object_id
-    puts "und er verwundet dich!!! Nun hast du nur noch #{$du.lp} Lebenspunkte!" if kommentarejn == 1 and gegner.object_id == $du.object_id
-    puts "und du verwundest #{gegner.name}!!! Nun hat dieser nur noch #{gegner.lp} Lebenspunkte!" if kommentarejn == 1 and @name.object_id == $du.name.object_id
+    puts "und er verwundet #{gegner.name}!!! Nun hat dieser nur noch #{gegner.lp} Lebenspunkte!" if kommentarejn == 1 and not gegner.human_trainer? and not @name.equal?($du.name)
+    puts "und er verwundet dich!!! Nun hast du nur noch #{$du.lp} Lebenspunkte!" if kommentarejn == 1 and gegner.human_trainer?
+    puts "und du verwundest #{gegner.name}!!! Nun hat dieser nur noch #{gegner.lp} Lebenspunkte!" if kommentarejn == 1 and @name.equal?($du.name)
     if rand(@hk) > rand(gegner.lp + gegner.wk) or @waffent.include? "Meisterhandschuh des Hasses"
       puts "#{gegner.name} ist nun so zusammengeboxt, dass er nun schlechter kämpft." if kommentarejn == 1
       gegner.w -= rand(2)
@@ -1248,8 +1259,8 @@ class Boxer
           sleep(1) if kommentarejn == 1
           if rand(50) * (1 + lp.abs) < (10 - countdownzahl) + @ak
             puts "#{@name} #{@b}ist wieder aufgestanden und stürtz#{@s}t " if kommentarejn == 1
-            print "s" if not self.object_id == $du.object_id and kommentarejn == 1
-            print "d" if self.object_id == $du.object_id and kommentarejn == 1
+            print "s" if not self.human_trainer? and kommentarejn == 1
+            print "d" if self.human_trainer? and kommentarejn == 1
             puts "ich nun erneut in den Kampf!!" if kommentarejn == 1
             @lp += 2 + rand(3) if @lp < 1
             @lp = 1 if @lp < 1
@@ -1263,8 +1274,8 @@ class Boxer
           end
         end
         if auf == 0
-          print "#{gegner.name} ha#{gegner.s}t gewonnen!" unless kommentarejn == 0 and gegner.object_id == $boxhandel.object_id
-          puts $overhau[0 - @lp] unless kommentarejn == 0 and gegner.object_id == $boxhandel.object_id
+          print "#{gegner.name} ha#{gegner.s}t gewonnen!" unless kommentarejn == 0 and gegner.equal?($boxhandel)
+          puts $overhau[0 - @lp] unless kommentarejn == 0 and gegner.equal?($boxhandel)
           sieger = gegner
           gegner.geld += rand(5000)
           gegner.motivation += rand(30 + 10 * over)/10.0
@@ -1300,8 +1311,8 @@ class Boxer
           end
         end
         if aufg == 0
-          print "#{@name} ha#{@s}t gewonnen!" unless kommentarejn == 0 and gegner.object_id == $boxhandel.object_id
-          puts $overhau[0 - gegner.lp] unless kommentarejn == 0 and gegner.object_id == $boxhandel.object_id
+          print "#{@name} ha#{@s}t gewonnen!" unless kommentarejn == 0 and gegner.equal?($boxhandel)
+          puts $overhau[0 - gegner.lp] unless kommentarejn == 0 and gegner.equal?($boxhandel)
           sieger = self
           @geld += rand(5000)
           @motivation += rand(30)/10.0
@@ -1315,7 +1326,7 @@ class Boxer
         end
       end
       if angr > 250
-        puts "UNENTSCHIEDEN!!!!!!!!" unless kommentarejn == 0 and gegner.object_id == $boxhandel.object_id
+        puts "UNENTSCHIEDEN!!!!!!!!" unless kommentarejn == 0 and gegner.equal?($boxhandel)
 
         break
       end

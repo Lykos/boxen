@@ -3,6 +3,7 @@
 require 'yaml'
 require 'boxer'
 require 'trainer'
+require 'player'
 
 # Still a hack to keep the old things compatible to the new ones.
 data = YAML.load(File.read('config.yml'))
@@ -45,11 +46,11 @@ def loop1
 end
 
 
-$boxhandel = Trainer.new("Boxerverkäufer")
-$gegner = [Trainer.new("Kolibri"), Trainer.new("Rentier"), Trainer.new("Biber"), Trainer.new("Fledermaus"), Trainer.new("Fuchs"), Trainer.new("Hase"), Trainer.new("Igel"), Trainer.new("Wolf"), Trainer.new("Elch")]
+$boxhandel = Player.new("Boxerverkäufer")
+$gegner = [Player.new("Kolibri"), Player.new("Rentier"), Player.new("Biber"), Player.new("Fledermaus"), Player.new("Fuchs"), Player.new("Hase"), Player.new("Igel"), Player.new("Wolf"), Player.new("Elch")]
 $gegner.each {|g| print g.boxer[0].name, " ist der Boxer vom ", g.name, "\n"}
 puts "Du sollst auch einen Boxer trainieren. Wie soll er heissen?"
-$du = Trainer.new("Du", 0, gets.chomp)
+$du = Player.new("Du", true, 0, gets.chomp)
 runde = 0
 duellrunde = 11 + rand(10)
 begin

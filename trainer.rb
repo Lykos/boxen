@@ -1,9 +1,10 @@
 require 'boxer'
 
 class Trainer < Boxer
-  def initialize(eignername, kijn=1, name=1)
+  def initialize(player, eignername, kijn=1, name=1)
+    @player = player
     @boss = self
-    @boxer = [Boxer.new(self, name, kijn)]
+    @boxer = [Boxer.new(@player, self, name, kijn)]
     @name = eignername
     @kondition = 0
     @gewicht = 70.0 + rand(30)
@@ -24,9 +25,9 @@ class Trainer < Boxer
     @s = ""
     @b = ""
     @t = ""
-    @s = "s" if self.object_id == $du.object_id
-    @b = "b" if self.object_id == $du.object_id
-    @t = "t" if self.object_id == $du.object_id
+    @s = "s" if human_trainer?
+    @b = "b" if human_trainer?
+    @t = "t" if human_trainer?
     @s = ""
     @b = ""
     @t = ""
@@ -63,10 +64,10 @@ class Trainer < Boxer
 
   def ctrunde(i)
     if not @name == "Kolibri" or not rand(4) == 0
-      $gegner[i] = Trainer.new(@name) if self.crunde == 1
+      $gegner[i] = Player.new(@name) if self.crunde == 1
     end
     if @name == "Elch"
-      $gegner[i] = Trainer.new(@name) if self.crunde == 1
+      $gegner[i] = Player.new(@name) if self.crunde == 1
     end
     @boxer.each_with_index do |e, i|
       if i + 1 == @boxer.length
@@ -267,7 +268,7 @@ class Trainer < Boxer
         return
       end
     end
-    @boxer.push Boxer.new(self, name, @kijn)
+    @boxer.push Boxer.new(@player, self, name, @kijn)
     kosten = 3000 + rand(2000)
     @geld -= kosten
     $boxhandel.geld += kosten
