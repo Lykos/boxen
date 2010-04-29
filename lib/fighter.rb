@@ -19,7 +19,7 @@ class Fighter
     if @boxer.waffen.length < 3
       @waffent = @boxer.waffen.dup
       return
-    elsif @boxer.kijn == 1
+    elsif @boxer.ki?
       return cwaffenwahl
     end
     @waffent = []

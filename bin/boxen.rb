@@ -52,7 +52,7 @@ $boxhandel = Player.new("Boxerverkäufer")
 $gegner = [Player.new("Kolibri"), Player.new("Rentier"), Player.new("Biber"), Player.new("Fledermaus"), Player.new("Fuchs"), Player.new("Hase"), Player.new("Igel"), Player.new("Wolf"), Player.new("Elch")]
 $gegner.each {|g| print g.boxer[0].name, " ist der Boxer vom ", g.name, "\n"}
 puts "Du sollst auch einen Boxer trainieren. Wie soll er heissen?"
-$du = Player.new("Du", true, 0, gets.chomp)
+$du = Player.new("Du", true, gets.chomp)
 runde = 0
 duellrunde = 11 + rand(10)
 begin
@@ -73,7 +73,7 @@ begin
       $gegner.each_with_index do |g,i|
         g.cherausfordern
       end
-      $boxhandel.crunde
+      $boxhandel.trainer_crunde
       $du.herausfordern
       duellrunde += 1 + rand(20)
     end
@@ -88,7 +88,7 @@ puts
 puts "           DU:"
 puts "          _____"
 puts
-$du.testen
+$du.trainer.testen
 puts "_______________________________________________________________________________________________"
 puts
 puts "                   ....und deine Boxer:"  
@@ -108,7 +108,7 @@ $gegner.each do |g|
   puts "           #{g.name}:"
   print "          ___"; g.name.length.times {print "_"}; puts
   puts
-  g.testen
+  g.trainer.testen
   puts "_______________________________________________________________________________________________"
   puts
   puts "                   ....und seine Boxer:"  
