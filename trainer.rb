@@ -22,26 +22,6 @@ class Trainer < Boxer
     @motivation = 0
     @heraus = 1
     @freude = 1000
-    @s = ""
-    @b = ""
-    @t = ""
-    @s = "s" if human_trainer?
-    @b = "b" if human_trainer?
-    @t = "t" if human_trainer?
-    @s = ""
-    @b = ""
-    @t = ""
-    @st = 0
-    @ak = 0
-    @init = 0
-    @agr = 0
-    @w = 0
-    @wk = 0
-    @hk = 0
-    @lp = 0
-    @kg = 0
-    @rw = 0
-    @alarm = 0
     @waffen = []
     @wkosten = []
     @amulette = []
@@ -56,11 +36,6 @@ class Trainer < Boxer
       @motivation = 10
     end
   end
-
-  attr_accessor :name, :motivation, :boxer, :kondition, :kraft, :geld, :staerke, :aufwaermen
-  attr_accessor :konzentration, :schnelligkeit, :muedigkeit, :hunger, :gewicht, :dehnbarkeit
-  attr_accessor :kijn, :heraus, :b, :s, :waffen, :waffent, :b, :s, :st, :ak, :init, :agr, :w
-  attr_accessor :wk, :hk, :kg, :rw, :lp, :amulette, :kosten
 
   def ctrunde(i)
     if not @name == "Kolibri" or not rand(4) == 0
