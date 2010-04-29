@@ -39,10 +39,9 @@ class Trainer < Boxer
 
   attr_accessor :name, :motivation, :boxer, :kondition, :kraft, :geld, :staerke, :aufwaermen
   attr_accessor :konzentration, :schnelligkeit, :muedigkeit, :hunger, :gewicht, :dehnbarkeit
-  attr_accessor :kijn, :heraus, :b, :s, :waffen, :waffent, :b, :s, :st, :ak, :init, :agr, :w
-  attr_accessor :wk, :hk, :kg, :rw, :lp, :amulette, :kosten
+  attr_accessor :kijn, :heraus, :waffen, :amulette, :kosten
 
-  def crunde
+  def runde
     @freude = 1000
     @motivation = 0
     @heraus = 1
@@ -53,14 +52,15 @@ class Trainer < Boxer
     @muedigkeit -= rand(5)
     @staerke += @muedigkeit / (rand(1000) + 1.0)
     @geld += 100
+    return :starved if @gewicht < 50 or @hunger > 60
+    return :sleeps if @muedigkeit < 1
+  end
+
+  def crunde
     puts "#{@name} ist verhungert. Es kommt ein neuer, gleichnamiger Boxertrainer." if @gewicht < 50
     return 1 if @gewicht < 50
     puts "#{@name} ist verhungert. Es kommt ein neuer, gleichnamiger Boxertrainer." if @hunger > 60
     return 1 if @hunger > 60
-    if @muedigkeit < 1
-      self.schlafen
-      return 2
-    end
     c = rand(100)
     self.schlafen if @konzentration < 20
     self.schlafen if @muedigkeit < 10
@@ -105,14 +105,7 @@ class Trainer < Boxer
     end
   end
   def runde
-    @freude = 1000
-    @motivation = 0
-    @heraus = 1
-    @hunger += (rand(20)/10.0)
-    @konzentration -= (rand(200)/20.0) if @muedigkeit < 20
-    @konzentration -= rand(100)/10.0 - rand(100)/10.0
-    @muedigkeit -= rand(5)
-    @geld += rand(100)
+    runde1
     puts "Du bist verhungert." if @hunger > 60
     raise Interrupt if @hunger > 60
     puts "Du bist verhungert." if @gewicht < 50
