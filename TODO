@@ -1,0 +1,11 @@
+- Take the player logic out of the boxer/trainer provisorically.
+- Isolate communication with a human player.
+- Refactor the control flow so that it really goes through the player.
+- Write a few tests.
+- Extract trader.
+- Create class game, refactor global logic and eliminate as many globals as
+  possible
+- Make the existing code nicer, improve names, write rdoc comments.
+- Write enough tests for a reasonable amount of code coverage.
+- Treat data in a more elegant way.
+- Externalize magic data.
