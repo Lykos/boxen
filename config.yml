@@ -1,0 +1,36 @@
+--- 
+:magic:
+- :name: zitternder Handschuh
+  :cost: 5000
+- :name: automatischer Meisterhandschuh
+  :cost: 9000
+- :name: Roboterarm
+  :cost: 6000
+- :name: brennender Meisterhandschuh
+  :cost: 11000
+- :name: "r\xC3\xBCstunsbrechender Meisterhandschuh"
+  :cost: 9001
+- :name: Meisterhandschuh des Todes
+  :cost: 15000
+- :name: Meisterhandschuh des Hasses
+  :cost: 8000
+- :name: Meisterhandschuh der Wut
+  :cost: 6001
+- :name: "Handschuh der St\xC3\xA4rke"
+  :cost: 4001
+- :name: Donnermeisterhandschuh
+  :cost: 7002
+- :name: Meisterhandschuh des Verderbens
+  :cost: 10000
+- :name: Handschuh des Angriffs
+  :cost: 2000
+- :name: Handschuh der Geschicklichkeit
+  :cost: 3000
+- :name: Meisterhandschuh der Geschicklichkeit
+  :cost: 5000
+- :name: Blitzhandschuh
+  :cost: 1000
+- :name: Hauhandschuh
+  :cost: 2002
+- :name: Handschuh des Yetis
+  :cost: 5005
