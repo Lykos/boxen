@@ -1,12 +1,14 @@
 #!/usr/bin/env ruby
 
+$:.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+
 require 'yaml'
 require 'boxer'
 require 'trainer'
 require 'player'
 
 # Still a hack to keep the old things compatible to the new ones.
-data = YAML.load(File.read('config.yml'))
+data = YAML.load(File.read(File.join('..', 'config.yml')))
 names = data[:magic].collect { |b| b[:name] }
 costs = data[:magic].collect { |b| b[:cost] }
 $magisch = names + names.collect { |n| n.dup }

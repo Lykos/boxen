@@ -22,26 +22,6 @@ class Trainer < Boxer
     @motivation = 0
     @heraus = 1
     @freude = 1000
-    @s = ""
-    @b = ""
-    @t = ""
-    @s = "s" if human_trainer?
-    @b = "b" if human_trainer?
-    @t = "t" if human_trainer?
-    @s = ""
-    @b = ""
-    @t = ""
-    @st = 0
-    @ak = 0
-    @init = 0
-    @agr = 0
-    @w = 0
-    @wk = 0
-    @hk = 0
-    @lp = 0
-    @kg = 0
-    @rw = 0
-    @alarm = 0
     @waffen = []
     @wkosten = []
     @amulette = []
@@ -62,34 +42,6 @@ class Trainer < Boxer
   attr_accessor :kijn, :heraus, :b, :s, :waffen, :waffent, :b, :s, :st, :ak, :init, :agr, :w
   attr_accessor :wk, :hk, :kg, :rw, :lp, :amulette, :kosten
 
-  def ctrunde(i)
-    if not @name == "Kolibri" or not rand(4) == 0
-      $gegner[i] = Player.new(@name) if self.crunde == 1
-    end
-    if @name == "Elch"
-      $gegner[i] = Player.new(@name) if self.crunde == 1
-    end
-    @boxer.each_with_index do |e, i|
-      if i + 1 == @boxer.length
-        @boxer.pop if e.crunde == 1
-      else
-        @boxer[i..-2] = @boxer[i + 1..-1] if e.crunde == 1
-      end
-    end
-  end
-  def trunde
-    runde
-    puts "_______________________________________________________________________________________________"
-    puts
-    puts "Die Runden deiner Boxer:"
-    @boxer.each_with_index do |e, i|
-      if i + 1 == boxer.length
-        @boxer.pop if e.runde == 1
-      else
-        @boxer[i..-2] = @boxer[i + 1..-1] if e.runde == 1
-      end
-    end
-  end
   def crunde
     @freude = 1000
     @motivation = 0
