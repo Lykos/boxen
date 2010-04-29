@@ -34,3 +34,125 @@
   :cost: 2002
 - :name: Handschuh des Yetis
   :cost: 5005
+:amulets:
+- :name: Eisenamulett
+  :cost: 18000
+- :name: Gromrilamulett
+  :cost: 16000
+- :name: Amulett der Felsenfestigkeit
+  :cost: 20000
+- :name: Wiederstandsamulett
+  :cost: 18000
+- :name: "Amulett der R\xC3\xBCstung"
+  :cost: 14000
+- :name: "st\xC3\xA4hlernes Amulett"
+  :cost: 16000
+- :name: Amulett der Standhaftigkeit
+  :cost: 18000
+- :name: Amulett der Wiederstandskraft
+  :cost: 14000
+- :name: Amulett des Lebens
+  :cost: 16000
+- :name: Amulett der Lebenskraft
+  :cost: 14000
+- :name: Amulett der Aufstehkraft
+  :cost: 16000
+- :name: "Amulett der Unersch\xC3\xBCtterlichkeit"
+  :cost: 24000
+- :name: Fehdehandschuh
+  :cost: 14000
+:vocals: 
+  ? !binary "w7Y=\n"
+  : 1
+
+  a: 3
+  o: 3
+  ? !binary "w6Q=\n"
+  : 1
+
+  e: 5
+  ? !binary "w7w=\n"
+  : 1
+
+  i: 2
+  u: 2
+:vocal_next: 
+  ? !binary "w7Y=\n"
+  : ""
+
+  a: u
+  o: ""
+  ? !binary "w6Q=\n"
+  : u
+
+  e: i
+  ? !binary "w7w=\n"
+  : ""
+
+  i: e
+  u: ""
+:consonants: 
+  v: 1
+  k: 5
+  w: 1
+  l: 5
+  sch: 3
+  x: 1
+  m: 4
+  b: 4
+  y: 1
+  n: 4
+  c: 3
+  z: 1
+  qu: 1
+  d: 4
+  ch: 2
+  p: 3
+  f: 4
+  r: 3
+  g: 2
+  s: 5
+  h: 3
+  t: 5
+  j: 2
+:consonant_next: 
+  v: [er]
+  k: [b, f, j, l, l, l, m, m, n, n, p, r, r, t, t, y, z, sch]
+  w: [y]
+  l: [b, b, d, d, f, f, g, g, h, j, k, k, l, l, l, m, m, n, n, p, p, s, s, t, t, z, sch]
+  sch: []
+  x: [y]
+  m: [b, d, f, g, j, k, k, n, p, p, s, t, t, y, z, sch]
+  b: [b, d, d, g, h, j, l, l, l, m, m, n, n, r, r, s, s, t, t, y]
+  y: [""]
+  n: [b, b, d, f, g, g, h, j, k, k, n, r, s, t, t, y, z, sch]
+  c: [k]
+  z: [g, g, j, k, k, l, m, n, p, t, y]
+  qu: [ar]
+  d: [b, d, g, g, h, j, l, l, m, n, r, r, s, t, y]
+  ch: [k,  v,  l,  w,  b,  m,  x,  sch,  c,  n,  y,  d,  qu,  z,  p,  ch,  f,  g,  r,  h,  s,  t,  j]
+  p: [d, f, f, g, h, j, k, k, l, m, n, p, p, s, t, t, y, sch]
+  f: [b, b, d, d, f, f, g, j, k, k, l, m, n, p, r, s, t, x, y, z, sch]
+  r: [b, d, d, f, g, j, k, l, l, m, m, n, p, r, s, t, t, y, z, sch, sch]
+  g: [g, j, l, l, m, r, y, sch]
+  s: [b, d, g, j, k, l, m, n, p, p, s, s, t, y, ch]
+  h: [k,  v,  l,  w,  b,  m,  x,  sch,  c,  n,  y,  d,  qu,  z,  p,  ch,  f,  g,  r,  h,  s,  t,  j]
+  t: [f, g, h, j, k, k, l, m, n, p, r, s, t, t, y, z, z, sch]
+  j: [""]
+:z1: [ZWANZIG, DREISSIG, VIERZIG, FÜNGZIG, SECHZIG, SIEBZIG, ACHTZIG, NEUNZIG]
+:z: 
+- EIN
+- ZWEI
+- DREI
+- VIER
+- !binary |
+  RsOcTkY=
+
+- SECHS
+- SIEBEN
+- ACHT
+- NEUN
+- ZEHN
+- ELF
+- !binary |
+  WlfDlkxG
