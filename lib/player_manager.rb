@@ -1,0 +1,2 @@
+class PlayerManager
+end
