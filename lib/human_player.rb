@@ -164,14 +164,40 @@ class HumanPlayer < PlayerManager
     end
   end
 
+  def testen(boxer)
+    puts "Konditionsstufe: #{boxer.kondition}"
+    puts "Gewicht: #{boxer.gewicht} kg"
+    puts "Schnelligkeitsstufe: #{boxer.schnelligkeit}"
+    puts "Geld: #{boxer.geld}.00 Fr."
+    puts "Kraftstufe: #{boxer.kraft}"
+    puts "Stärkestufe: #{boxer.staerke}"
+    puts "Aufgewärmtheitsstufe: #{boxer.aufwaermen}"
+    puts "Motivationsstufe: #{boxer.motivation}"
+    puts "Konzentrationsstufe: #{boxer.konzentration}"
+    puts "Konzentrationsfaehigkeitsstufe: #{boxer.konzentrationsfaehigkeit}"
+    puts "Freude: #{boxer.freude}"
+    puts "Hunger: #{boxer.hunger}"
+    puts "Dehnbarkeitsstufe: #{boxer.dehnbarkeit}"
+    puts "Wachheitsstufe: #{boxer.muedigkeit}"
+    w = boxer.waffen.join ", "
+    w = "keine" if boxer.waffen == []
+    puts "magische Boxhandschuhe: #{w}"
+    a = boxer.amulette.join ", "
+    a = "keine" if boxer.amulette == []
+    puts "Amulette: #{a}"
+    puts "Pokale: #{boxer.pokal}"
+  end
+
   FORMS = {
-    :run => "um zu RENNEN",
-    :jump_rope => "um SEILZUSPRINGEN",
-    :small_sack => "um einen SACK zu treffen",
-    :big_sack => "um einen SACK zu treffen",
+    :run => "zu RENNEN",
+    :jump_rope => "SEILZUSPRINGEN",
+    :small_sack => "einen SACK zu treffen",
+    :big_sack => "einen SACK zu treffen",
     :strength_training => "um KRAFTTRAINING zu MACHEN",
-    :stretch => "um zu DEHNEN",
-    :wizard => "um DEM ZAUBERER ZUZUHÖREN"
+    :stretch => "zu DEHNEN",
+    :wizard => "DEM ZAUBERER ZUZUHÖREN",
+    :film => "EINEN FILM ZU SCHAUEN",
+    :eat => "zu ESSEN"
   }
 
   # Prints out boxer specific notifications for the player.
@@ -187,7 +213,7 @@ class HumanPlayer < PlayerManager
       puts "#{name} ha#{s}t keine Lust dazu."
     when :no_concentration
       puts "#{name} #{b}ist zu unkonzentriert dazu!"
-      print "(JA, du siehst das RICHTIG: #{FORMS[args[0]]} braucht"
+      print "(JA, du siehst das RICHTIG: um #{FORMS[args[0]]} braucht"
       puts "es nicht extrem viel Konzentration)"
     when :too_tired
       puts "#{name} #{b}ist zu müde dazu!"
@@ -200,7 +226,7 @@ class HumanPlayer < PlayerManager
       puts " nicht mehr kann#{s}#{t}!"
     when :no_eat_money
       puts "#{name} hat ja gar kein Geld! Er darf nicht essen! Rrraus!!"
-    when :eats
+    when :eat
       puts "Mampf, mjam, schleck, mmh!"
     when :no_hunger
       puts "Bääh, kein Hunger!"
@@ -233,6 +259,21 @@ class HumanPlayer < PlayerManager
       puts "DafÜÜr laSSTet mein Fluch AB jETzt auf dIIER."
       puts "#{name} hat nun sehr grosse Angst und ist psychisch völlig fertig."
     when :wizard
+      puts "SooOo meIN SoHn, dUUUUU bist aLsOO traurig? Dannn zuber ich dich gutt. NuN biSt dUUU dea BAÄSTE!"
+    when :no_film_money
+      puts "#{name} hat ja gar kein Geld! Er darf nicht ins Kino! Rrraus!!"
+    when :boss_no_film_money
+      puts "Du hast ja gar kein Geld! Du darfst nicht ins Kino! Rrraus!!"
+    when :no_film_money
+      puts "#{name} hat ja gar kein Geld! Er darf nicht ins Kino! Rrraus!!"
+    when :film
+      puts "Der Film gefällt dem Boxer sehr. Dir ist er eigentlich zu doof. Das hat natürlich auch seinen Preis: Der Eintritt ist teuer."
+    when :sleep
+      puts "Chrr Zzz!"
+      puts "#{name} ha#{s}t nun geschlafen, #{b}ist aber auch hungriger geworden."
+    when :eat_kaviar
+      puts "mmh! leckaschmecka!! mehr!"
+      puts "OOH! WAAS??!! DAS SOLL DER PREIS SEIN!!?? NIE WIEDER!!"
     else
       raise "Unknown message type #{type}."
     end

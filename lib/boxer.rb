@@ -182,7 +182,7 @@ class Boxer
     elsif @hunger <= 10
       boxer_message(:no_hunger)
     else
-      boxer_message(:eats)
+      boxer_message(:eat)
       @gewicht += ((rand(3) + rand(3))/10.0)
       @geld -= rand(70)
       @hunger -= rand(20)
@@ -312,33 +312,28 @@ class Boxer
       @motivation += (rand(21)/10.0) if @motivation < 100
       @geld -= rand(70)
     end
-    puts "SooOo meIN SoHn, dUUUUU bist aLsOO traurig? Dannn zuber ich dich gutt. NuN biSt dUUU dea BAÄSTE!" if human?
   end
+  
   def filmschaun
     @dehnbarkeit = 0
     @aufwaermen = 0
     if @konzentration < 15
-      puts "#{@name} ist zu unkonzentriert dazu!", "(JA, du siehst das RICHTIG: um EINEN FILM ZU SCHAUEN braucht es nicht extrem viel Konzentration)" if human?
-      return
+      boxer_message(:no_concentration)
+    elsif @muedigkeit < 5
+      boxer_message(:too_tired)
+    elsif @boss.geld < 70
+      boxer_message(:boss_no_film_money)
+    elsif @geld < 70
+      boxer_message(:no_film_money)
+    else
+      boxer_message(:film)
+      @geld -= rand(70)
+      @boss.geld -= rand(70)
+      @freude += rand(21)
     end
-    if @muedigkeit < 5
-      puts "#{@name} ist zu müde dazu!" if human?
-      return
-    end
-    if @boss.geld < 70
-      puts "Du hast ja gar kein Geld! Du darfst nicht ins Kino! Rrraus!!" if human?
-      return
-    end
-    if @geld < 70
-      puts "#{@name} hat ja gar kein Geld! Er darf nicht ins Kino! Rrraus!!" if human?
-      return
-    end
-    @geld -= rand(70)
-    @boss.geld -= rand(70)
-    @freude += rand(21)
-    puts "Der Film gefällt dem Boxer sehr. Dir ist er eigentlich zu doof. Das hat natürlich auch seinen Preis: Der Eintritt ist teuer." if human?
   end
   def schlafen
+    boxer_message(:sleep)
     @freude = ((@freude + rand(100))/2.0)
     @konzentration = (@konzentrationsfaehigkeit*5 + rand(@konzentrationsfaehigkeit*5))/10.0
     @muedigkeit += (rand(50) + rand(50)) if @muedigkeit < 30
@@ -347,53 +342,25 @@ class Boxer
     @aufwaermen = 0
     @dehnbarkeit = 0
     @hunger += rand(10)
-    puts "Chrr Zzz!" if human?
-    puts "#{@name} ha#{@s}t nun geschlafen, #{@b}ist aber auch hungriger geworden." if human?
   end
-  def testen
-    puts "Konditionsstufe: #{@kondition}"
-    puts "Gewicht: #{@gewicht} kg"
-    puts "Schnelligkeitsstufe: #{@schnelligkeit}"
-    puts "Geld: #{@geld}.00 Fr."
-    puts "Kraftstufe: #{@kraft}"
-    puts "Stärkestufe: #{@staerke}"
-    puts "Aufgewärmtheitsstufe: #{@aufwaermen}"
-    puts "Motivationsstufe: #{@motivation}"
-    puts "Konzentrationsstufe: #{@konzentration}"
-    puts "Konzentrationsfaehigkeitsstufe: #{@konzentrationsfaehigkeit}"
-    puts "Freude: #{@freude}"
-    puts "Hunger: #{@hunger}"
-    puts "Dehnbarkeitsstufe: #{@dehnbarkeit}"
-    puts "Wachheitsstufe: #{@muedigkeit}"
-    w = @waffen.join ", "
-    w = "keine" if @waffen == []
-    puts "magische Boxhandschuhe: #{w}"
-    a = @amulette.join ", "
-    a = "keine" if @amulette == []
-    puts "Amulette: #{a}"
-    puts "Pokale: #{@pokal}"
-  end
+
   def fkessen
     @dehnbarkeit = 0
     @aufwaermen = 0
     if @konzentration < 10
-      puts "#{@name} ist zu unkonzentriert dazu!", "(JA, du siehst das RICHTIG: um ZU ESSEN braucht es nicht extrem viel Konzentration)" if human?
-      return
+      boxer_message(:no_concentration, :eat)
+    elsif @muedigkeit < 5
+      boxer_message(:too_tired)
+    elsif @geld < 700
+      boxer_message(:no_eat_money)
+    elsif @hunger <= 10
+      boxer_message(:no_hunger)
+    else
+      boxer_message(:eat_kaviar)
+      @gewicht += ((rand(12) + rand(12))/10.0)
+      @geld -= rand(700) + 30
+      @hunger -= rand(30)
     end
-    if @muedigkeit < 5
-      puts "#{@name} ist zu müde dazu!" if human?
-      return
-    end
-    if @geld < 700
-      puts "#{@name} hat ja gar kein Geld! Er darf nicht essen! Rrraus!!" if human?
-      return
-    end
-    @gewicht += ((rand(12) + rand(12))/10.0) if @hunger > 10
-    @geld -= rand(700) + 30 if @hunger > 10
-    puts "mmh! leckaschmecka!! mehr!" if human? and @hunger > 10
-    puts "OOH! WAAS??!! DAS SOLL DER PREIS SEIN!!?? NIE WIEDER!!" if human? and @hunger > 10
-    puts "Bääh, kein Hunger!" if human? and @hunger <= 10
-    @hunger -= rand(30) if @hunger > 10
   end
   def duell(other, *args)
     own_fighter = Fighter.new(self)
