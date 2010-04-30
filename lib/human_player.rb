@@ -164,6 +164,24 @@ class HumanPlayer < PlayerManager
     end
   end
 
+  def ttesten(boxer)
+    puts "Konditionsstufe: #{boxer.kondition}"
+    puts "Gewicht: #{boxer.gewicht} kg"
+    puts "Schnelligkeitsstufe: #{boxer.schnelligkeit}"
+    puts "Geld: #{boxer.geld}.00 Fr."
+    puts "Kraftstufe: #{boxer.kraft}"
+    puts "Stärkestufe: #{boxer.staerke}"
+    puts "Aufgewärmtheitsstufe: #{boxer.aufwaermen}"
+    puts "Konzentrationsstufe: #{boxer.konzentration}"
+    puts "Konzentrationsfaehigkeitsstufe: #{boxer.konzentrationsfaehigkeit}"
+    puts "Hunger: #{boxer.hunger}"
+    puts "Dehnbarkeitsstufe: #{boxer.dehnbarkeit}"
+    puts "Wachheitsstufe: #{boxer.muedigkeit}"
+    print "Boxer: "
+    boxer.boxer.each_with_index {|boxers,i| print boxers.name, ", " if i < self.boxer.length - 1}
+    puts "#{self.boxer[-1].name} und natürlich #{boxer.name} selbst."
+  end
+
   def testen(boxer)
     puts "Konditionsstufe: #{boxer.kondition}"
     puts "Gewicht: #{boxer.gewicht} kg"
@@ -188,9 +206,21 @@ class HumanPlayer < PlayerManager
     puts "Pokale: #{boxer.pokal}"
   end
 
-  FORMS = {
+  CONCENTRATE_FORMS = {
     :run => "zu RENNEN",
     :jump_rope => "SEILZUSPRINGEN",
+    :small_sack => "einen SACK zu treffen",
+    :big_sack => "einen SACK zu treffen",
+    :strength_training => "um KRAFTTRAINING zu MACHEN",
+    :stretch => "zu DEHNEN",
+    :wizard => "DEM ZAUBERER ZUZUHÖREN",
+    :film => "EINEN FILM ZU SCHAUEN",
+    :eat => "zu ESSEN"
+  }
+
+  WEAK_FORMS = {
+    :run => "zu rennen",
+    :jump_rope => "seilzuspringen",
     :small_sack => "einen SACK zu treffen",
     :big_sack => "einen SACK zu treffen",
     :strength_training => "um KRAFTTRAINING zu MACHEN",
@@ -213,7 +243,7 @@ class HumanPlayer < PlayerManager
       puts "#{name} ha#{s}t keine Lust dazu."
     when :no_concentration
       puts "#{name} #{b}ist zu unkonzentriert dazu!"
-      print "(JA, du siehst das RICHTIG: um #{FORMS[args[0]]} braucht"
+      print "(JA, du siehst das RICHTIG: um #{CONCENTRATE_FORMS[args[0]]} braucht"
       puts "es nicht extrem viel Konzentration)"
     when :too_tired
       puts "#{name} #{b}ist zu müde dazu!"
@@ -225,7 +255,8 @@ class HumanPlayer < PlayerManager
       print "#{name} renn#{s}t und rennt, bis #{pronoun}"
       puts " nicht mehr kann#{s}#{t}!"
     when :no_eat_money
-      puts "#{name} hat ja gar kein Geld! Er darf nicht essen! Rrraus!!"
+      puts "#{name} ha#{s}t ja gar kein Geld! #{pronoun.capitalize} " +
+        "darf#{s}#{t} nicht essen! Rrraus!!"
     when :eat
       puts "Mampf, mjam, schleck, mmh!"
     when :no_hunger
@@ -264,8 +295,6 @@ class HumanPlayer < PlayerManager
       puts "#{name} hat ja gar kein Geld! Er darf nicht ins Kino! Rrraus!!"
     when :boss_no_film_money
       puts "Du hast ja gar kein Geld! Du darfst nicht ins Kino! Rrraus!!"
-    when :no_film_money
-      puts "#{name} hat ja gar kein Geld! Er darf nicht ins Kino! Rrraus!!"
     when :film
       puts "Der Film gefällt dem Boxer sehr. Dir ist er eigentlich zu doof. Das hat natürlich auch seinen Preis: Der Eintritt ist teuer."
     when :sleep
@@ -274,6 +303,24 @@ class HumanPlayer < PlayerManager
     when :eat_kaviar
       puts "mmh! leckaschmecka!! mehr!"
       puts "OOH! WAAS??!! DAS SOLL DER PREIS SEIN!!?? NIE WIEDER!!"
+    when :too_weak
+      puts "Du bist zu schwer und zu schwach um #{WEAK_FORMS[args[0]]}."
+    when :trainer_rope_jump
+      puts "Du probierst verzweifelt, seilzuspringen, schaffst es aber nie mehr als fünf Mal."
+    when :trainer_run
+      puts "Du joggst ein kleines Stückchen, dann fällst du um vor Müdigkeit."
+    when :trainer_eat
+      puts "Das Essen mundet dir sehr."
+    when :trainer_no_hunger
+      puts "Du hast aber keinen Hunger!"
+    when :trainer_small_sack
+      puts "Bümmele..bübümmele..bübümmele..bübümmele ..bümmelebümmele..bümmele..bübümmele..."
+    when :trainer_big_sack
+      puts "dong!.....batz!..döff!....doing!..."
+    when :trainer_strength_training
+      puts "Du machst natürlich leichteres Krafttraining als der Boxer, nach ein paar Liegestützen bist du schon völlig KO."
+    when :trainer_eat_kaviar
+      puts "Das Zeug ist dir eigentlich zu fettig, aber es muss sein."
     else
       raise "Unknown message type #{type}."
     end

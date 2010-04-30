@@ -128,6 +128,10 @@ class Boxer
     end
   end
 
+  def testen
+    @player.testen(self)
+  end
+
   def seilspringen
     if @freude < 10
       boxer_message(:no_desire)

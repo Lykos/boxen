@@ -24,9 +24,6 @@ class Trainer < Boxer
     @wkosten = []
     @amulette = []
     @akosten = []
-    @b = "b"
-    @s = "s"
-    @t = "t"
     if @name == "Elch"
       @kondition = 2
       @schnelligkeit = 2
@@ -55,237 +52,177 @@ class Trainer < Boxer
   def seilspringen
     if @kraft > 10 and @staerke > 5 and @kondition > 5
       super
-      return
+    elsif @konzentration < 10
+      boxer_message(:no_concentration, :rope_jump)
+    elsif @muedigkeit < 15
+      boxer_message(:too_tired)
+    elsif @gewicht > (@kraft * 10)
+      boxer_message(:too_weak, :rope_jump)
+    else
+      boxer_message(:trainer_rope_jump)
+      @kondition += ((rand(5) + 1)/100.0)
+      @kondition += @aufwaermen/50.0
+      @aufwaermen += rand(2)
+      @gewicht -= (rand(100)/1000.0)
+      @hunger += rand(5)
+      @muedigkeit -= rand(5)
+      @dehnbarkeit += rand(10)/10.0
     end
-    if @konzentration < 10
-      puts "Du bist zu unkonzentriert dazu!", "(JA, du siehst das RICHTIG: um SEILZUSPRINGEN braucht es nicht extrem viel Konzentration)" if human?
-      return
-    end
-    if @muedigkeit < 15
-      puts "Du bist zu müde dazu!" if human?
-      return
-    end
-    if @gewicht > (@kraft * 10)
-      puts "Du bist zu schwer und zu schwach um Seilzuspringen." if human?
-      return
-    end
-    @kondition += ((rand(5) + 1)/100.0)
-    @kondition += @aufwaermen/50.0
-    @aufwaermen += rand(2)
-    @gewicht -= (rand(100)/1000.0)
-    @hunger += rand(5)
-    @muedigkeit -= rand(5)
-    @dehnbarkeit += rand(10)/10.0
-    puts "Du probierst verzweifelt, seilzuspringen, schaffst es aber nie mehr als fünf Mal." if human?
   end
   def rennen
     if @kraft > 10 and @staerke > 5 and @kondition > 5
       super
-      return
+    elsif @konzentration < 10
+      boxer_message(:no_concentration, :run)
+    elsif @muedigkeit < 20
+      boxer_message(:too_tired)
+    elsif @gewicht > (@kraft * 10)
+      boxer_message(:too_weak, :run)
+    else
+      boxer_message(:trainer_run)
+      @kondition += ((rand(3) + 1)/100.0)
+      @kondition += @aufwaermen/50.0
+      @aufwaermen += rand(5)
+      @gewicht -= (rand(200)/1000.0)
+      @hunger += rand(7)
+      @muedigkeit -= rand(5)
+      @dehnbarkeit += rand(10)/10.0
     end
-    if @konzentration < 10
-      puts "Du bist zu unkonzentriert dazu!", "(JA, du siehst das RICHTIG: um zu RENNEN braucht es nicht extrem viel Konzentration)" if human?
-      return
-    end
-    if @muedigkeit < 20
-      puts "Du bist zu müde dazu!" if human?
-      return
-    end
-    if @gewicht > (@kraft * 10)
-      puts "Du bist zu schwer und zu schwach um zu rennen." if human?
-      return
-    end
-    @kondition += ((rand(3) + 1)/100.0)
-    @kondition += @aufwaermen/50.0
-    @aufwaermen += rand(5)
-    @gewicht -= (rand(200)/1000.0)
-    @hunger += rand(7)
-    @muedigkeit -= rand(5)
-    @dehnbarkeit += rand(10)/10.0
-    puts "Du joggst ein kleines Stückchen, dann fällst du um vor Müdigkeit." if human?
   end
   def essen
     @dehnbarkeit = 0
     @aufwaermen = 0
     if @konzentration < 10
-      puts "Du bist zu unkonzentriert dazu!", "(JA, du siehst das RICHTIG: um ZU ESSEN braucht es nicht extrem viel Konzentration)" if human?
-      return
+      boxer_message(:no_concentration, :eat)
+    elsif @muedigkeit < 5
+      boxer_message(:too_tired)
+    elsif @geld < 70
+      boxer_message(:no_eat_money)
+    elsif @hunger <= 10
+      boxer_message(:trainer_no_hunger)
+    else
+      @gewicht += ((rand(3) + rand(3))/10.0)
+      @geld -= rand(70)
+      @hunger -= rand(20)
     end
-    if @muedigkeit < 5
-      puts "Du bist zu müde dazu!" if human?
-      return
-    end
-    if @geld < 70
-      puts "Du hast ja gar kein Geld! Er darf nicht essen! Rrraus!!" if human?
-      return
-    end
-    @gewicht += ((rand(3) + rand(3))/10.0) if @hunger > 10
-    @geld -= rand(70) if @hunger > 10
-    puts "Das Essen mundet dir sehr." if human? and @hunger > 10
-    puts "Du hast aber keinen Hunger!" if human? and @hunger <= 10
-    @hunger -= rand(20) if @hunger > 10
   end
   def inkbsackb
     if @kraft > 10 and @staerke > 5 and @kondition > 5
       super
-      return
+    elsif @konzentration < 15
+      boxer_message(:no_concentration, :small_sack)
+    elsif @muedigkeit < 10
+      boxer_message(:too_tired)
+    elsif @aufwaermen < 2
+      boxer_message(:not_warmed_up)
+    else
+      @schnelligkeit += (rand(5)/50.0)
+      @schnelligkeit += @aufwaermen/50.0
+      @gewicht -= (rand(100)/1000.0)
+      @aufwaermen += rand(20)/10.0
+      @hunger += rand(3)
+      @muedigkeit -= rand(3)
+      @dehnbarkeit += rand(5)/10.0
     end
-    if @konzentration < 15
-      puts "Du bist zu unkonzentriert dazu!", "(JA, du siehst das RICHTIG: um einen SACK zu treffen braucht es nicht extrem viel Konzentration)" if human?
-      return
-    end
-    if @muedigkeit < 10
-      puts "Du bist zu müde dazu!" if human?
-      return
-    end
-    if @aufwaermen < 2
-      puts "Du bist zu wenig aufgewärmt, um hiermit effektiv trainieren zu können." if human?
-      return
-    end
-    @schnelligkeit += (rand(5)/50.0)
-    @schnelligkeit += @aufwaermen/50.0
-    @gewicht -= (rand(100)/1000.0)
-    @aufwaermen += rand(20)/10.0
-    @hunger += rand(3)
-    @muedigkeit -= rand(3)
-    @dehnbarkeit += rand(5)/10.0
-    puts "Bümmele..bübümmele..bübümmele..bübümmele ..bümmelebümmele..bümmele..bübümmele..." if human?
   end
   def ingbsackb
     if @kraft > 10 and @staerke > 5 and @kondition > 5
       super
-      return
+    elsif @konzentration < 13
+      boxer_message(:no_concentration, :big_sack)
+    elsif @muedigkeit < 15
+      boxer_message(:too_tired)
+    elsif @aufwaermen < 2
+      boxer_message(:not_warmed_up)
+    else
+      @staerke += (rand(5)/50.0)
+      @staerke += @aufwaermen/50.0
+      @gewicht -= (rand(200)/1000.0)
+      @aufwaermen += rand(20)/20.0
+      @hunger += rand(5)
+      @muedigkeit -= rand(5)
+      @dehnbarkeit += rand(10)/10.0
     end
-    if @konzentration < 13
-      puts "Du bist zu unkonzentriert dazu!", "(JA, du siehst das RICHTIG: um einen SACK zu treffen braucht es nicht extrem viel Konzentration)" if human?
-      return
-    end
-    if @muedigkeit < 15
-      puts "Du bist zu müde dazu!" if human?
-      return
-    end
-    if @aufwaermen < 2
-      puts "Du bist zu wenig aufgewärmt, um hiermit effektiv trainieren zu können." if human?
-      return
-    end
-    @staerke += (rand(5)/50.0)
-    @staerke += @aufwaermen/50.0
-    @gewicht -= (rand(200)/1000.0)
-    @aufwaermen += rand(20)/20.0
-    @hunger += rand(5)
-    @muedigkeit -= rand(5)
-    @dehnbarkeit += rand(10)/10.0
-    puts "dong!.....batz!..döff!....doing!..." if human?
   end
   def krafttraining
     if @kraft > 15 and @staerke > 5 and @kondition > 5
       super
-      return
+    elsif @konzentration < 10
+      boxer_message(:no_concentration, :strength_training)
+    elsif @muedigkeit < 25
+      boxer_message(:too_tired)
+    elsif @aufwaermen < 2
+      boxer_message(:not_warmed_up)
+    else
+      @kondition += (rand(10)/100.0)
+      @kondition += @aufwaermen/50.0
+      @kraft += (rand(10)/50.0)
+      @kraft += @aufwaermen/50.0
+      @staerke += (rand(10)/50.0)
+      @staerke += @aufwaermen/50.0
+      @gewicht -= (rand(400)/1000.0)
+      @aufwaermen += rand(40)/20.0
+      @hunger += rand(10)
+      @muedigkeit -= rand(10)
+      @dehnbarkeit += rand(10)/10.0
     end
-    if @konzentration < 10
-      puts "Du bist zu unkonzentriert dazu!", "(JA, du siehst das RICHTIG: um KRAFTTRAINING ZU MACHEN braucht es nicht extrem viel Konzentration)" if human?
-      return
-    end
-    if @muedigkeit < 25
-      puts "Du bist zu müde dazu!" if human?
-      return
-    end
-    if @aufwaermen < 2
-      puts "Du bist zu wenig aufgewärmt, um hiermit effektiv trainieren zu können." if human?
-      return
-    end
-    @kondition += (rand(10)/100.0)
-    @kondition += @aufwaermen/50.0
-    @kraft += (rand(10)/50.0)
-    @kraft += @aufwaermen/50.0
-    @staerke += (rand(10)/50.0)
-    @staerke += @aufwaermen/50.0
-    @gewicht -= (rand(400)/1000.0)
-    @aufwaermen += rand(40)/20.0
-    @hunger += rand(10)
-    @muedigkeit -= rand(10)
-    @dehnbarkeit += rand(10)/10.0
-    puts "Du machst natürlich leichteres Krafttraining als der Boxer, nach ein paar Liegestützen bist du schon völlig KO." if human?
   end
   def dehnen
     if @konzentration < 15
-      puts "Du bist zu unkonzentriert dazu!", "(JA, du siehst das RICHTIG: um zu DEHNEN braucht es nicht extrem viel Konzentration)" if human?
-      return
+      boxer_message(:no_concentration, :strength_training)
+    elsif @muedigkeit < 10
+      boxer_message(:too_tired)
+    elsif @aufwaermen < 4
+      boxer_message(:not_warmed_up)
+    elsif @dehnbarkeit < 2
+      boxer_message(:no_stretch)
+    else
+      boxer_message(:stretch)
+      @aufwaermen += rand(3)
+      @aufwaermen += rand(5) if @aufwaermen > 5
+      @aufwaermen += @aufwaermen / 10.0 if @aufwaermen > 7
+      @aufwaermen += @dehnbarkeit / 10.0
+      @kondition +=  (rand(5)/100.0) if @aufwaermen > 5
+      @kondition += @aufwaermen/50.0 if @aufwaermen > 7
+      @kondition += @dehnbarkeit/15.0
+      3.times do
+        @dehnbarkeit -= rand(2)
+        break if @dehnbarkeit == 0
+      end
     end
-    if @muedigkeit < 10
-      puts "Du bist zu müde dazu!" if human?
-      return
-    end
-    if @aufwaermen < 4
-      puts "Du bist zu wenig aufgewärmt dazu." if human?
-      return
-    end
-    if @dehnbarkeit < 2
-      puts "Deine Dehnbarkeitsstufe ist zu niedrig." if human?
-      return
-    end
-    @aufwaermen += rand(3)
-    @aufwaermen += rand(5) if @aufwaermen > 5
-    @aufwaermen += @aufwaermen / 10.0 if @aufwaermen > 7
-    @aufwaermen += @dehnbarkeit / 10.0
-    @kondition +=  (rand(5)/100.0) if @aufwaermen > 5
-    @kondition += @aufwaermen/50.0 if @aufwaermen > 7
-    @kondition += @dehnbarkeit/15.0
-    3.times do
-      @dehnbarkeit -= rand(2)
-      break if @dehnbarkeit == 0
-    end
-    puts "Du dehnst." if human?
   end
   def yoga
     if @konzentration < 20
-      puts "Du bist zu unkonzentriert dazu!" if human?
-      return
-    end  
-    if @muedigkeit < 10
-      puts "Du bist zu müde dazu!" if human?
-      return
+      boxer_message(:no_concentration)
+    elsif @muedigkeit < 10
+      boxer_message(:too_tired)
+    else
+      boxer_message(:yoga)
+      @konzentration += rand(21) if @konzentration < @konzentrationsfaehigkeit
+      @konzentrationsfaehigkeit += rand(200) / 100.0
     end
-    @konzentration += rand(21) if @konzentration < @konzentrationsfaehigkeit
-    @konzentrationsfaehigkeit += rand(200) / 100.0
-    puts "Du machst komische Konzentrationsübungen." if human?
   end
+
   def testen
-    puts "Konditionsstufe: #{@kondition}"
-    puts "Gewicht: #{@gewicht} kg"
-    puts "Schnelligkeitsstufe: #{@schnelligkeit}"
-    puts "Geld: #{@geld}.00 Fr."
-    puts "Kraftstufe: #{@kraft}"
-    puts "Stärkestufe: #{@staerke}"
-    puts "Aufgewärmtheitsstufe: #{@aufwaermen}"
-    puts "Konzentrationsstufe: #{@konzentration}"
-    puts "Konzentrationsfaehigkeitsstufe: #{@konzentrationsfaehigkeit}"
-    puts "Hunger: #{@hunger}"
-    puts "Dehnbarkeitsstufe: #{@dehnbarkeit}"
-    puts "Wachheitsstufe: #{@muedigkeit}"
-    print "Boxer: "
-    self.boxer.each_with_index {|boxers,i| print boxers.name, ", " if i < self.boxer.length - 1}
-    puts "#{self.boxer[-1].name} und natürlich #{@name} selbst."
+    @player.ttesten(self)
   end
+  
   def fkessen
     @dehnbarkeit = 0
     @aufwaermen = 0
     if @konzentration < 10
-      puts "Du bist zu unkonzentriert dazu!", "(JA, du siehst das RICHTIG: um ZU ESSEN braucht es nicht extrem viel Konzentration)" if human?
-      return
+      boxer_message(:no_concentration)
+    elsif @muedigkeit < 5
+      boxer_message(:too_tired)
+    elsif @geld < 700
+      boxer_message(:no_eat_money)
+    elsif @hunger <= 10
+      boxer_message(:trainer_no_hunger)
+    else
+      boxer_message(:trainer_eat_kaviar)
+      @gewicht += ((rand(12) + rand(12))/10.0)
+      @geld -= rand(700) + 30
+      @hunger -= rand(30)
     end
-    if @muedigkeit < 5
-      puts "Du bist zu müde dazu!" if human?
-      return
-    end
-    if @geld < 700
-      puts "Du hast ja gar kein Geld! Du darfst nicht essen! Rrraus!!" if human?
-      return
-    end
-    @gewicht += ((rand(12) + rand(12))/10.0) if @hunger > 10
-    @geld -= rand(700) + 30 if @hunger > 10
-    puts "Das Zeug ist dir eigentlich zu fettig, aber es muss sein." if human? and @hunger > 10
-    puts "Du hast keinen Hunger!" if human? and @hunger <= 10
-    @hunger -= rand(30) if @hunger > 10
   end
 end
