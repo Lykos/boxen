@@ -6,6 +6,13 @@ require 'yaml'
 require 'boxer'
 require 'trainer'
 require 'player'
+require 'player_manager'
+require 'human_player'
+require 'ai_player1'
+require 'ai_player2'
+require 'ai_player3'
+require 'ai_player_kolibri'
+require 'ai_player_elch'
 
 # Still a hack to keep the old things compatible to the new ones.
 data = YAML.load(File.read(File.join('..', 'config.yml')))
@@ -48,11 +55,20 @@ def loop1
 end
 
 
-$boxhandel = Player.new("Boxerverkäufer")
-$gegner = [Player.new("Kolibri"), Player.new("Rentier"), Player.new("Biber"), Player.new("Fledermaus"), Player.new("Fuchs"), Player.new("Hase"), Player.new("Igel"), Player.new("Wolf"), Player.new("Elch")]
+$boxhandel = Player.new("Boxerverkï¿½ufer", AIPlayer2.new)
+$gegner = [
+    Player.new("Kolibri", AIPlayerKolibri.new),
+    Player.new("Rentier", AIPlayer3.new),
+    Player.new("Biber", AIPlayer3.new),
+    Player.new("Fledermaus", AIPlayer1.new),
+    Player.new("Fuchs", AIPlayer1.new),
+    Player.new("Hase", AIPlayer3.new),
+    Player.new("Igel", AIPlayer3.new),
+    Player.new("Wolf", AIPlayer3.new),
+    Player.new("Elch", AIPlayerElch.new)]
 $gegner.each {|g| print g.boxer[0].name, " ist der Boxer vom ", g.name, "\n"}
 puts "Du sollst auch einen Boxer trainieren. Wie soll er heissen?"
-$du = Player.new("Du", true, gets.chomp)
+$du = Player.new("Du", HumanPlayer.new, true, gets.chomp)
 runde = 0
 duellrunde = 11 + rand(10)
 begin
@@ -65,13 +81,13 @@ begin
           g.ctrunde(i)
         end
       }
-    ].each {|thread| thread.join}
+    ].each { |thread| thread.join }
     if duellrunde == runde
       puts "_______________________________________________________________________________________________"
       puts
       puts "DUELLRUNDE:"
       $gegner.each_with_index do |g,i|
-        g.cherausfordern
+        g.herausfordern
       end
       $boxhandel.trainer_crunde
       $du.herausfordern

@@ -4,7 +4,6 @@ class Trainer < Boxer
   def initialize(player, eignername, name=1)
     @player = player
     @boss = self
-    @boxer = [Boxer.new(@player, self, name)]
     @name = eignername
     @kondition = 0
     @gewicht = 70.0 + rand(30)
@@ -38,8 +37,6 @@ class Trainer < Boxer
       @motivation = 10
     end
   end
-
-  attr_reader :boxer
 
   def runde
     @freude = 1000
