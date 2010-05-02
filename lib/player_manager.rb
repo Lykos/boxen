@@ -4,6 +4,7 @@ class PlayerManager
 
   def player=(player)
     @player = player
+    @boxer = @player.boxer
     @trainer = @player.trainer
     @name = @trainer.name
   end
@@ -20,6 +21,6 @@ class PlayerManager
   
   # Handles notifications for the player about one specific boxer.
   #
-  def message(name, type, *args)
+  def boxer_message(name, type, *args)
   end
 end

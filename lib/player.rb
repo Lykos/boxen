@@ -1,14 +1,19 @@
+require 'forwardable'
+
 class Player
   def initialize(name, manager, human=false, *args)
     @name = name
     @manager = manager
     @human = human
     @trainer = Trainer.new(self, name, *args)
-    @boxer = [Boxer.new(self, @trainer, name)]
+    @boxer = [Boxer.new(self, @trainer, *args)]
     @manager.player = self
   end
 
-  attr_reader :boxer, :trainer, :human, :name
+  extend Forwardable
+
+  def_delegators :@manager, :boxer_message, :message
+  attr_reader :boxer, :trainer, :human, :name, :manager
 
   def human?
     @human
@@ -16,7 +21,7 @@ class Player
 
   def trunde
     trainer_runde
-    start_boxers
+    @manager.start_boxers
     @boxer.each_with_index do |e, i|
       if i + 1 == boxer.length
         @boxer.pop if boxer_runde(e) == 1
@@ -143,6 +148,7 @@ class Player
       @trainer.schlafen
       return 2
     end
+    @manager.trainer_runde
   end
   
   def handel(boxer)

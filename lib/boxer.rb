@@ -61,7 +61,7 @@ class Boxer
   attr_reader :boss, :konzentrationsfaehigkeit
   attr_accessor :name, :kondition, :kraft, :geld, :staerke, :aufwaermen, :motivation
   attr_accessor :konzentration, :schnelligkeit, :freude, :muedigkeit, :hunger, :gewicht
-  attr_accessor :dehnbarkeit, :pokal, :heraus, :waffen, :amulette, :kosten
+  attr_accessor :dehnbarkeit, :pokal, :heraus, :waffen, :amulette, :wkosten, :akosten
 
   extend Forwardable
 
@@ -72,7 +72,7 @@ class Boxer
   def_delegators :@player, :human?, :message
 
   def boxer_message(*args)
-    @player.boxer_message(@name, args)
+    @player.boxer_message(@name, *args)
   end
   
   def ki?
@@ -129,7 +129,7 @@ class Boxer
   end
 
   def testen
-    @player.testen(self)
+    @player.manager.testen(self)
   end
 
   def seilspringen

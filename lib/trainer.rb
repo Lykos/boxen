@@ -101,6 +101,7 @@ class Trainer < Boxer
     elsif @hunger <= 10
       boxer_message(:trainer_no_hunger)
     else
+      boxer_message(:trainer_eat)
       @gewicht += ((rand(3) + rand(3))/10.0)
       @geld -= rand(70)
       @hunger -= rand(20)
@@ -116,6 +117,7 @@ class Trainer < Boxer
     elsif @aufwaermen < 2
       boxer_message(:not_warmed_up)
     else
+      boxer_message(:trainer_small_sack)
       @schnelligkeit += (rand(5)/50.0)
       @schnelligkeit += @aufwaermen/50.0
       @gewicht -= (rand(100)/1000.0)
@@ -135,6 +137,7 @@ class Trainer < Boxer
     elsif @aufwaermen < 2
       boxer_message(:not_warmed_up)
     else
+      boxer_message(:trainer_big_sack)
       @staerke += (rand(5)/50.0)
       @staerke += @aufwaermen/50.0
       @gewicht -= (rand(200)/1000.0)
@@ -154,6 +157,7 @@ class Trainer < Boxer
     elsif @aufwaermen < 2
       boxer_message(:not_warmed_up)
     else
+      boxer_message(:trainer_strength_training)
       @kondition += (rand(10)/100.0)
       @kondition += @aufwaermen/50.0
       @kraft += (rand(10)/50.0)
@@ -193,7 +197,7 @@ class Trainer < Boxer
   end
   def yoga
     if @konzentration < 20
-      boxer_message(:no_concentration)
+      boxer_message(:not_concentrated_enough)
     elsif @muedigkeit < 10
       boxer_message(:too_tired)
     else
@@ -204,7 +208,7 @@ class Trainer < Boxer
   end
 
   def testen
-    @player.ttesten(self)
+    @player.manager.ttesten(self)
   end
   
   def fkessen

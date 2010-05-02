@@ -1,6 +1,4 @@
-- Take the player logic out of the boxer/trainer provisorically.
 - Isolate communication with a human player.
-- Refactor the player so that human and computer use the same methods.
 - Don't reinvent the wheel in player, use the boxer methods.
 - Refactor the player so that boxer and trainer use the same methods.
 - accessor -> reader

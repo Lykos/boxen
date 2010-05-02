@@ -177,9 +177,8 @@ class HumanPlayer < PlayerManager
     puts "Hunger: #{boxer.hunger}"
     puts "Dehnbarkeitsstufe: #{boxer.dehnbarkeit}"
     puts "Wachheitsstufe: #{boxer.muedigkeit}"
-    print "Boxer: "
-    boxer.boxer.each_with_index {|boxers,i| print boxers.name, ", " if i < self.boxer.length - 1}
-    puts "#{self.boxer[-1].name} und natürlich #{boxer.name} selbst."
+    print "Boxer: " + @boxer.collect { |b| b.name }.join(",")
+    puts " und natürlich #{boxer.name} selbst."
   end
 
   def testen(boxer)
@@ -232,7 +231,7 @@ class HumanPlayer < PlayerManager
 
   # Prints out boxer specific notifications for the player.
   #
-  def boxer_message(type, name, *args)
+  def boxer_message(name, type, *args)
     # Tricks for german grammar.
     b = name == "Du" ? "b" : ""
     s = name == "Du" ? "s" : ""
@@ -277,7 +276,7 @@ class HumanPlayer < PlayerManager
       if name == "Du"
         puts "."
       else
-        print ", aber Spass macht ihm das gar nicht"
+        puts ", aber Spass macht ihm das gar nicht."
       end
     when :not_concentrated_enough
       puts "#{name} #{b}ist zu unkonzentriert dazu!"
@@ -322,7 +321,7 @@ class HumanPlayer < PlayerManager
     when :trainer_eat_kaviar
       puts "Das Zeug ist dir eigentlich zu fettig, aber es muss sein."
     else
-      raise "Unknown message type #{type}."
+      raise "Unknown message type #{type.inspect}."
     end
   end
 end
