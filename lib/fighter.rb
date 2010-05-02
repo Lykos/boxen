@@ -19,7 +19,7 @@ class Fighter
     if @boxer.waffen.length < 3
       @waffent = @boxer.waffen.dup
       return
-    elsif @boxer.kijn == 1
+    elsif @boxer.ki?
       return cwaffenwahl
     end
     @waffent = []
@@ -89,6 +89,7 @@ class Fighter
   end
 
   # Takes care of effects after a duel.
+  #
   def after_duell
     @boxer.geld += rand(500)
     @boxer.boss.geld += rand(50)
@@ -114,7 +115,7 @@ class Fighter
     @st += 1 if @waffent.include? "Handschuh der Stärke"
     @st += 2 if @waffent.include? "Donnermeisterhandschuh"
     @agr = 1 + ((@boxer.schnelligkeit+@boxer.aufwaermen)/2).to_i
-    @agr *= 2 if @waffent.include? "Meisterhandschuh des Verderbens"                     
+    @agr *= 2 if @waffent.include? "Meisterhandschuh des Verderbens"
     @agr += 2 if @waffent.include? "Handschuh des Angriffs" or @waffent.include? "Meisterhandschuh des Verderbens"
     @w = 1 + ((@boxer.kondition / 20 + @boxer.aufwaermen) / 2).to_i
     @w += 2 if @boxer.amulette.include? "Amulett der Felsenfestigkeit"

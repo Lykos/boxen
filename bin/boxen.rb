@@ -1,12 +1,21 @@
 #!/usr/bin/env ruby
 
+$:.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+
 require 'yaml'
 require 'boxer'
 require 'trainer'
 require 'player'
+require 'player_manager'
+require 'human_player'
+require 'ai_player1'
+require 'ai_player2'
+require 'ai_player3'
+require 'ai_player_kolibri'
+require 'ai_player_elch'
 
 # Still a hack to keep the old things compatible to the new ones.
-data = YAML.load(File.read('config.yml'))
+data = YAML.load(File.read(File.join('..', 'config.yml')))
 names = data[:magic].collect { |b| b[:name] }
 costs = data[:magic].collect { |b| b[:cost] }
 $magisch = names + names.collect { |n| n.dup }
@@ -46,11 +55,20 @@ def loop1
 end
 
 
-$boxhandel = Player.new("Boxerverkäufer")
-$gegner = [Player.new("Kolibri"), Player.new("Rentier"), Player.new("Biber"), Player.new("Fledermaus"), Player.new("Fuchs"), Player.new("Hase"), Player.new("Igel"), Player.new("Wolf"), Player.new("Elch")]
+$boxhandel = Player.new("Boxerverkï¿½ufer", AIPlayer2.new)
+$gegner = [
+    Player.new("Kolibri", AIPlayerKolibri.new),
+    Player.new("Rentier", AIPlayer3.new),
+    Player.new("Biber", AIPlayer3.new),
+    Player.new("Fledermaus", AIPlayer1.new),
+    Player.new("Fuchs", AIPlayer1.new),
+    Player.new("Hase", AIPlayer3.new),
+    Player.new("Igel", AIPlayer3.new),
+    Player.new("Wolf", AIPlayer3.new),
+    Player.new("Elch", AIPlayerElch.new)]
 $gegner.each {|g| print g.boxer[0].name, " ist der Boxer vom ", g.name, "\n"}
 puts "Du sollst auch einen Boxer trainieren. Wie soll er heissen?"
-$du = Player.new("Du", true, 0, gets.chomp)
+$du = Player.new("Du", HumanPlayer.new, true, gets.chomp)
 runde = 0
 duellrunde = 11 + rand(10)
 begin
@@ -63,15 +81,15 @@ begin
           g.ctrunde(i)
         end
       }
-    ].each {|thread| thread.join}
+    ].each { |thread| thread.join }
     if duellrunde == runde
       puts "_______________________________________________________________________________________________"
       puts
       puts "DUELLRUNDE:"
       $gegner.each_with_index do |g,i|
-        g.cherausfordern
+        g.herausfordern
       end
-      $boxhandel.crunde
+      $boxhandel.trainer_crunde
       $du.herausfordern
       duellrunde += 1 + rand(20)
     end
@@ -86,7 +104,7 @@ puts
 puts "           DU:"
 puts "          _____"
 puts
-$du.testen
+$du.trainer.testen
 puts "_______________________________________________________________________________________________"
 puts
 puts "                   ....und deine Boxer:"  
@@ -106,7 +124,7 @@ $gegner.each do |g|
   puts "           #{g.name}:"
   print "          ___"; g.name.length.times {print "_"}; puts
   puts
-  g.testen
+  g.trainer.testen
   puts "_______________________________________________________________________________________________"
   puts
   puts "                   ....und seine Boxer:"  
