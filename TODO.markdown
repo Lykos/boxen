@@ -1,3 +1,5 @@
+TODO
+=====
 - Isolate communication with a human player.
 - Don't reinvent the wheel in player, use the boxer methods.
 - Refactor the player so that boxer and trainer use the same methods.
