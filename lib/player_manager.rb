@@ -1,4 +1,8 @@
+
+# Represents the object which controls a player.
+#
 class PlayerManager
+
   attr_accessor :player
   attr_reader :name, :player, :trainer
 

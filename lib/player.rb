@@ -1,5 +1,7 @@
 require 'forwardable'
 
+# Represents one particular player and handles the game logic about this player.
+#
 class Player
   def initialize(name, manager, human=false, *args)
     @name = name
